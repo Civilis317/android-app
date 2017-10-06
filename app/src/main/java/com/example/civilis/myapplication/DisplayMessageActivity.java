@@ -14,11 +14,13 @@ public class DisplayMessageActivity extends AppCompatActivity {
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String name = intent.getStringExtra(Constants.NAME);
+        String longitude = intent.getStringExtra(Constants.LONGITUDE);
+        String latitude = intent.getStringExtra(Constants.LATITUDE);
 
         // Capture the layout's TextView and set the string as its text
         TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(message);
+        textView.setText(name + ", " + longitude + ", " + latitude);
 
     }
 }

@@ -10,8 +10,6 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +40,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editTextName);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+
+        String name = getTextEditValue(R.id.txtName);
+        String longitude = getTextEditValue(R.id.txtLong);
+        String latitude = getTextEditValue(R.id.txtLat);
+
+        new PostLocationTask().execute(name, longitude, latitude);
+
+        intent.putExtra(Constants.NAME, name);
+        intent.putExtra(Constants.LONGITUDE, longitude);
+        intent.putExtra(Constants.LATITUDE, latitude);
         startActivity(intent);
     }
+
+    private String getTextEditValue(int txtEditId) {
+        return ((EditText) findViewById(txtEditId)).getText().toString();
+    }
+
 }
+

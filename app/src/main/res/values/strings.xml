@@ -5,6 +5,11 @@
     <string name="hello_world">Welcome</string>
     <string name="next_page">Next Page</string>
     <string name="text2">Welcome to the second page!</string>
-    <string name="edit_message">Enter a Message</string>
+    <string name="name_hint">Name</string>
+    <string name="long_hint">Longitude</string>
+    <string name="lat_hint">Latitude</string>
     <string name="button_send">Send</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
