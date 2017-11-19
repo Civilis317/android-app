@@ -8,45 +8,52 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
-public class PostLocationTask extends AsyncTask<String, Void, String> {
+import javax.net.ssl.HttpsURLConnection;
+
+public class PostLocationTask extends AsyncTask<JSONObject, Void, String> {
 
     @Override
-    protected String doInBackground(String... args) {
-        postLocation(args[0], args[1], args[2]);
+    protected String doInBackground(JSONObject... args) {
+        postLocation(args[0]);
         return "dummy";
     }
 
-
-    private void postLocation(String name, String longitude, String latitude) {
+    private void postLocation(JSONObject location) {
         try {
-            URL url = new URL("http://56.18.1.30:5000/api/v1/location/save");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
+            String localUrl = "http://56.18.1.30:5000/api/v1/location/save";
+            String herokuUrl = "https://tracktracer.herokuapp.com/api/v1/location/save";
+            URLConnection urlConnection = new URL(localUrl).openConnection() ;
 
 
-            //conn.setRequestProperty("Accept","application/json");
-//            conn.setDoOutput(true);
-//            conn.setDoInput(true);
-            conn.connect();
-
-            JSONObject location = new JSONObject();
-            location.put("name", name);
-            location.put("long", longitude);
-            location.put("lat", latitude);
-
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-//            os.writeBytes(URLEncoder.encode(location.toString(), "UTF-8"));
-            os.writeBytes(location.toString());
-
-            os.flush();
-            os.close();
-
-            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-            Log.i("MSG" , conn.getResponseMessage());
-            conn.disconnect();
+            if (urlConnection instanceof HttpURLConnection) {
+                HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
+                httpConnection.setRequestMethod("POST");
+                httpConnection.setRequestProperty("Content-Type", "application/json");
+                httpConnection.setDoOutput(true);
+                httpConnection.connect();
+                DataOutputStream os = new DataOutputStream(httpConnection.getOutputStream());
+                os.writeBytes(location.toString());
+                os.flush();
+                os.close();
+                Log.i("STATUS", String.valueOf(httpConnection.getResponseCode()));
+                Log.i("MSG" , httpConnection.getResponseMessage());
+                httpConnection.disconnect();
+            } else if (urlConnection instanceof HttpsURLConnection) {
+                HttpsURLConnection httpsConnection = (HttpsURLConnection) urlConnection;
+                httpsConnection.setRequestMethod("POST");
+                httpsConnection.setRequestProperty("Content-Type", "application/json");
+                httpsConnection.setDoOutput(true);
+                httpsConnection.connect();
+                DataOutputStream os = new DataOutputStream(httpsConnection.getOutputStream());
+                os.writeBytes(location.toString());
+                os.flush();
+                os.close();
+                Log.i("STATUS", String.valueOf(httpsConnection.getResponseCode()));
+                Log.i("MSG" , httpsConnection.getResponseMessage());
+                httpsConnection.disconnect();
+            }
 
         } catch (Exception  e) {
             e.printStackTrace();
