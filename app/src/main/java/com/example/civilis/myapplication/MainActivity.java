@@ -12,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.civilis.myapplication.Util.Constants;
 import com.example.civilis.myapplication.tasks.SendLocationTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SendLocationTask.
     }
 
     @SuppressLint("HardwareIds")
-    public void sendLocation(View view) throws JSONException {
+    public void sendLocation(View view) throws JSONException, IOException {
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
         JSONObject trackerLocation = new JSONObject();

@@ -1,4 +1,4 @@
-package com.example.civilis.myapplication;
+package com.example.civilis.myapplication.http;
 
 
 import org.json.JSONArray;
