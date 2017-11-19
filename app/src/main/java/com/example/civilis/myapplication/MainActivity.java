@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements SendLocationTask.
         CookieHandler.setDefault(cookieManager);
         JSONObject trackerLocation = new JSONObject();
 
-//        trackerLocation.put("phoneid", Settings.Secure.getString(getContentResolver(), "android_id"));
-        trackerLocation.put("phoneid", "2206e9a44381684d");
+        trackerLocation.put("phoneid", Settings.Secure.getString(getContentResolver(), "android_id"));
+//        trackerLocation.put("phoneid", "2206e9a44381684d"); // NB for testing purposes
         trackerLocation.put("model", android.os.Build.MODEL);
         trackerLocation.put("name", Settings.Secure.getString(getContentResolver(), "bluetooth_name"));
 
