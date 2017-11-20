@@ -18,13 +18,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class Connection {
 
     private int httpStatusCode;
     private String httpResponseMessage;
-    private JSONObject jsonResponse;
 
     public Connection() throws IOException {
     }
@@ -34,8 +31,9 @@ public class Connection {
     }
 
     public JSONObject get(String url, Map<String, String> parameterMap) throws IOException, JSONException {
-        JSONObject result;
-        URLConnection urlConnection = new URL(url).openConnection();
+        JSONObject jsonResponse;
+        String getUrl = assembleGetUrl(url, parameterMap);
+        URLConnection urlConnection = new URL(getUrl).openConnection();
         if (urlConnection instanceof HttpURLConnection) {
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
             httpConnection.setRequestMethod("GET");
@@ -51,15 +49,6 @@ public class Connection {
             }
             httpConnection.disconnect();
             return jsonResponse;
-        } else if (urlConnection instanceof HttpsURLConnection) {
-            HttpsURLConnection httpsConnection = (HttpsURLConnection) urlConnection;
-            httpsConnection.setRequestMethod("GET");
-            httpsConnection.connect();
-            result = getJSONResult(urlConnection.getInputStream());
-            this.httpStatusCode = httpsConnection.getResponseCode();
-            this.httpResponseMessage = httpsConnection.getResponseMessage();
-            httpsConnection.disconnect();
-            return result;
         }
         throw new MalformedURLException("only http and https protocols are supported");
     }
@@ -68,7 +57,8 @@ public class Connection {
         return post(null);
     }
 
-    public JSONObject post (String url, JSONObject payload) throws IOException, JSONException {
+    public JSONObject post(String url, JSONObject payload) throws IOException, JSONException {
+        JSONObject jsonResponse;
         URLConnection urlConnection = new URL(url).openConnection();
         if (urlConnection instanceof HttpURLConnection) {
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
@@ -93,21 +83,6 @@ public class Connection {
             }
             httpConnection.disconnect();
             return jsonResponse;
-        } else if (urlConnection instanceof HttpsURLConnection) {
-            HttpsURLConnection httpsConnection = (HttpsURLConnection) urlConnection;
-            httpsConnection.setRequestMethod("POST");
-            httpsConnection.setRequestProperty("Content-Type", "application/json");
-            httpsConnection.setDoOutput(true);
-            httpsConnection.connect();
-            if (payload != null) {
-                DataOutputStream os = new DataOutputStream(httpsConnection.getOutputStream());
-                os.writeBytes(payload.toString());
-                os.flush();
-                os.close();
-            }
-            JSONObject result = getJSONResult(urlConnection.getInputStream());
-            httpsConnection.disconnect();
-            return result;
         }
         throw new MalformedURLException("only http and https protocols are supported");
     }
@@ -126,10 +101,15 @@ public class Connection {
         Object json = new JSONTokener(data).nextValue();
         if (json instanceof JSONObject) {
             return new JSONObject(result.toString());
-        } else if (json instanceof JSONArray){
+        } else if (json instanceof JSONArray) {
             return new JSONArray(data).getJSONObject(0);
         }
         return null;
+    }
+
+    private String assembleGetUrl(String baseUrl, Map<String, String> parameterMap) {
+        // TODO: loop over Map and really assemble url...
+        return baseUrl;
     }
 
     public int getHttpStatusCode() {
