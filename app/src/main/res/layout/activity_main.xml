@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.civilis.myapplication.MainActivity">
+    tools:context="com.example.civilis.myapplication.MainActivity"
+    tools:layout_editor_absoluteY="25dp">
 
 
     <android.support.v7.widget.Toolbar
@@ -12,88 +13,90 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/txtName"
-        android:layout_width="0dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="163dp"
-        android:ems="10"
-        android:hint="@string/name_hint"
-        android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:onClick="sendMessage"
-        android:text="@string/button_send"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtLat"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-    <EditText
-        android:id="@+id/txtLong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="42dp"
-        android:ems="10"
-        android:hint="@string/long_hint"
-        android:inputType="numberDecimal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtName"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
-    <EditText
-        android:id="@+id/txtLat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:ems="10"
-        android:hint="@string/lat_hint"
-        android:inputType="number|numberSigned|numberDecimal"
-        app:layout_constraintLeft_toLeftOf="@+id/txtLong"
-        app:layout_constraintRight_toRightOf="@+id/txtLong"
-        app:layout_constraintTop_toBottomOf="@+id/txtLong"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
 
     <Button
         android:id="@+id/btnLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="168dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="33dp"
         android:onClick="sendLocation"
         android:text="@string/button_location"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
         tools:layout_constraintBaseline_creator="1"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button2" />
+        tools:layout_constraintRight_creator="1" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="206dp"
+        android:checked="false"
+        android:textOff="@string/local_url_text"
+        android:textOn="@string/heroku_url_text"
+        app:layout_constraintEnd_toEndOf="@+id/btnLocation"
+        app:layout_constraintStart_toStartOf="@+id/btnLocation"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="76dp" />
+
+    <TextView
+        android:id="@+id/txtInterval"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="211dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="327dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="35dp"
+        android:text="TrackTracer"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/toggleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/btnStartService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="39dp"
+        android:onClick="startIntentService"
+        android:text="@string/start_service"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnStopService"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnStopService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="54dp"
+        android:layout_marginEnd="25dp"
+        android:onClick="stopIntentService"
+        android:text="@string/stop_service"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnStartService" />
 
 
 </android.support.constraint.ConstraintLayout>

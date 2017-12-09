@@ -9,7 +9,11 @@
     <string name="long_hint">Longitude</string>
     <string name="lat_hint">Latitude</string>
     <string name="button_send">Send</string>
-    <string name="button_location">Location</string>
+    <string name="button_location">Send location</string>
+    <string name="heroku_url_text">Heroku</string>
+    <string name="local_url_text">Local</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">Stop Service</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -4,23 +4,48 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import com.example.civilis.myapplication.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class Config extends Application {
+    private static final String INTERVAL = "interval";
+    private static final String TARGET = "target";
+    private static String HEROKU_URL;
+    private static String LOCAL_URL;
+
+    public static Map<String, Object> settingsMap = new HashMap<>(1024);
+
+    public static void setInterval(Integer interval) {
+        settingsMap.put(INTERVAL, interval);
+    }
+
+    public static Integer getInterval() {
+        Integer result = (Integer) settingsMap.get(INTERVAL);
+        if (result == null) {
+            result = 0;
+        }
+        return result;
+    }
+
+    public static void setTarget(String target) {
+        settingsMap.put(TARGET, target);
+    }
+
     public enum PropertyKey {
         USERNAME("USERNAME"),
         PASSWORD("PASSWORD"),
         BASE_URL_HEROKU("BASE_URL_HEROKU"),
         BASE_URL_LOCAL("BASE_URL_LOCAL"),
         LOGIN_PATH("LOGIN_PATH"),
-        SEND_LOCATION_PATH("SEND_LOCATION_PATH"),
-        GET_LOCATION_LIST_PATH("GET_LOCATION_LIST_PATH"),
-        LOCAL("LOCAL");
+        SEND_LOCATION_PATH("SEND_LOCATION_PATH");
 
         private final String name;
 
@@ -50,6 +75,8 @@ public class Config extends Application {
     @Override
     public void onCreate() {
         instance = this;
+        LOCAL_URL = getString(R.string.local_url_text);
+        HEROKU_URL = getString(R.string.heroku_url_text);
         super.onCreate();
     }
 
@@ -62,8 +89,12 @@ public class Config extends Application {
     }
 
     private static boolean IS_LOCAL() throws IOException {
-        String local = getProperty(PropertyKey.LOCAL);
-        return Boolean.parseBoolean(local);
+        String test = (String) settingsMap.get(TARGET);
+        if (test != null && test.equals(HEROKU_URL)) {
+            return false;
+        }
+        setTarget(LOCAL_URL);
+        return true;
     }
 
     public static String getLoginUrl() throws IOException {

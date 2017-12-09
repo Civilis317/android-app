@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.example.civilis.myapplication.Util.Config;
 import com.example.civilis.myapplication.Util.Constants;
 import com.example.civilis.myapplication.tasks.SendLocationTask;
 
@@ -23,11 +26,31 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 
 public class MainActivity extends AppCompatActivity implements SendLocationTask.TaskDelegate {
+    private ToggleButton toggleButton;
+    private TextView textView;
+    private Intent sendLocationServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.toggleButton = (ToggleButton)findViewById(R.id.toggleButton);
+        this.toggleButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                System.out.println("checked: " + toggleButton.getText() + ", " + toggleButton.isChecked());
+                Config.setTarget(toggleButton.getText().toString());
+                try {
+                    textView.setText(Config.getLoginUrl());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        this.textView = (TextView) findViewById(R.id.txtInterval);
+        this.textView.setText("");
     }
 
     @Override
@@ -111,18 +134,33 @@ public class MainActivity extends AppCompatActivity implements SendLocationTask.
         return null;
     }
 
-    public void sendMessage(View view) throws JSONException {
-        // call sendLocationTask using delegate...
-        SendLocationTask sendLocationTask = new SendLocationTask();
-        sendLocationTask.setTaskDelegate(this);
-        sendLocationTask.execute();
-    }
-
     @Override
     public void onTaskFinishGettingData(JSONObject result) {
+        try {
+            if (result.getBoolean("posted")) {
+                Config.setInterval(result.getInt("interval"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         intent.putExtra(Constants.NAME, result.toString());
         startActivity(intent);
     }
+
+    public void stopIntentService(View view) {
+        this.textView.setText("Service Stopped");
+        if (sendLocationServiceIntent != null) {
+            this.stopService(sendLocationServiceIntent);
+        }
+    }
+
+    public void startIntentService(View view) {
+        this.textView.setText("Service Started");
+        sendLocationServiceIntent = new Intent(this, SendLocationService.class);
+        sendLocationServiceIntent.setAction("Test Action");
+        this.startService(sendLocationServiceIntent);
+    }
+
 }
 

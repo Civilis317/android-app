@@ -40,7 +40,7 @@ public class Connection {
             httpConnection.connect();
             this.httpStatusCode = httpConnection.getResponseCode();
             this.httpResponseMessage = httpConnection.getResponseMessage();
-            if (this.httpStatusCode == 200) {
+            if (this.httpStatusCode == HttpURLConnection.HTTP_OK) {
                 jsonResponse = getJSONResult(urlConnection.getInputStream());
             } else {
                 jsonResponse = new JSONObject();
@@ -74,7 +74,7 @@ public class Connection {
             }
             this.httpStatusCode = httpConnection.getResponseCode();
             this.httpResponseMessage = httpConnection.getResponseMessage();
-            if (this.httpStatusCode == 200) {
+            if (this.httpStatusCode == HttpURLConnection.HTTP_OK) {
                 jsonResponse = getJSONResult(urlConnection.getInputStream());
             } else {
                 jsonResponse = new JSONObject();
@@ -82,6 +82,7 @@ public class Connection {
                 jsonResponse.put("message", this.httpResponseMessage);
             }
             httpConnection.disconnect();
+            ((HttpURLConnection) urlConnection).disconnect();
             return jsonResponse;
         }
         throw new MalformedURLException("only http and https protocols are supported");
@@ -95,6 +96,7 @@ public class Connection {
         while ((line = reader.readLine()) != null) {
             result.append(line);
         }
+        inputStream.close();
         String data = result.toString();
 
         // if array => take 1st element

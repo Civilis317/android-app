@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.civilis.myapplication">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name="com.example.civilis.myapplication.Util.Config"
+        android:name=".Util.Config"
         android:allowBackup="true"
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,13 +26,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity" >
+        <activity
+            android:name=".DisplayMessageActivity"
+            android:parentActivityName=".MainActivity">
+
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <service
+            android:name=".SendLocationService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

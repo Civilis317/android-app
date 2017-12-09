@@ -40,7 +40,12 @@ public class SendLocationTask extends AsyncTask<JSONObject, Void, String> {
             // login and try again
             if (login()) {
                 jsonResponse= connection.post(url, location);
+
             }
+        }
+
+        if (jsonResponse.getBoolean("posted")) {
+            Config.setInterval(jsonResponse.getInt("interval"));
         }
         return jsonResponse;
     }
