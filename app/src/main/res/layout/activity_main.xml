@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.civilis.myapplication.MainActivity"
+    tools:context="com.example.civilis.tracktracer.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
 
@@ -20,32 +20,6 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-    <Button
-        android:id="@+id/btnLocation"
-        android:layout_width="168dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="33dp"
-        android:onClick="sendLocation"
-        android:text="@string/button_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
-        tools:layout_constraintBaseline_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
-
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="206dp"
-        android:checked="false"
-        android:textOff="@string/local_url_text"
-        android:textOn="@string/heroku_url_text"
-        app:layout_constraintEnd_toEndOf="@+id/btnLocation"
-        app:layout_constraintStart_toStartOf="@+id/btnLocation"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -54,12 +28,23 @@
         app:layout_constraintGuide_begin="76dp" />
 
     <TextView
+        android:id="@+id/txtTarget"
+        android:layout_width="352dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtInterval"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRunning" />
+
+    <TextView
         android:id="@+id/txtInterval"
         android:layout_width="0dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="211dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginBottom="214dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -73,7 +58,7 @@
         android:layout_marginTop="35dp"
         android:text="TrackTracer"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/toggleButton"
+        app:layout_constraintBottom_toTopOf="@+id/btnCheck"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
@@ -81,22 +66,48 @@
         android:id="@+id/btnStartService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="58dp"
+        android:layout_marginEnd="30dp"
         android:onClick="startIntentService"
         android:text="@string/start_service"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnStopService"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btnStopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="54dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="58dp"
+        android:layout_marginStart="30dp"
         android:onClick="stopIntentService"
         android:text="@string/stop_service"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnStartService" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtRunning"
+        android:layout_width="349dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="79dp"
+        android:layout_marginTop="73dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toTopOf="@+id/txtInterval"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnCheck" />
+
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="149dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="150dp"
+        android:onClick="checkService"
+        android:text="check service"
+        app:layout_constraintBottom_toTopOf="@+id/txtInterval"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
 
 </android.support.constraint.ConstraintLayout>

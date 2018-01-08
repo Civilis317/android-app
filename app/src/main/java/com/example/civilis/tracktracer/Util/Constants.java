@@ -1,4 +1,4 @@
-package com.example.civilis.myapplication.Util;
+package com.example.civilis.tracktracer.Util;
 
 public class Constants {
 

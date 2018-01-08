@@ -1,14 +1,22 @@
-package com.example.civilis.myapplication;
+package com.example.civilis.tracktracer.service;
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Process;
 import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.example.civilis.myapplication.Util.Config;
-import com.example.civilis.myapplication.tasks.SendLocationTask;
+import com.example.civilis.tracktracer.Util.Config;
+import com.example.civilis.tracktracer.tasks.SendLocationTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,47 +24,80 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.util.Date;
 
-public class SendLocationService extends IntentService {
-    private boolean stopService;
 
-    // constructor
-    public SendLocationService() {
-        super("SendLocationService");
+public class MainService extends Service {
+    private static final String TAG = "MainService";
+    private Looper looper;
+    private MainServiceHandler mainServiceHandler;
+
+    private final class MainServiceHandler extends Handler {
+        public MainServiceHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            synchronized (this) {
+                int i = 0;
+                while(Config.isRunning()) {
+                    try {
+                        i++;
+                        sendLocation();
+                        if (Config.getInterval() == 0 ) {
+                            Config.setInterval(1);
+                        }
+                        Log.i(i + ": " + Config.getInterval() +": " + new Date() +  TAG, "Sending location...");
+                        Thread.sleep(Config.getInterval() * 1000);
+                    } catch (Exception e) {
+                        Log.i(TAG, e.getMessage());
+                    }
+                }
+            }
+
+            // stop service for start id:
+            Log.i(TAG, "Finished...");
+//            stopSelfResult(msg.arg1);
+            stopSelf();
+
+        }
+
+    }
+
+    public MainService() {
+    }
+
+    @Override
+    public void onCreate() {
+        HandlerThread handlerThread = new HandlerThread("sendLocationThread", Process.THREAD_PRIORITY_BACKGROUND);
+        handlerThread.start();
+        looper = handlerThread.getLooper();
+        mainServiceHandler = new MainServiceHandler(looper);
+        Config.setRunning(true);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Message msg = mainServiceHandler.obtainMessage();
+        msg.arg1 = startId;
+        mainServiceHandler.sendMessage(msg);
+        Toast.makeText(this, "MainService started", Toast.LENGTH_SHORT).show();
+
+        // if service is stopped, do not automatically restart
+        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        stopService = true;
-        stopSelf();
+        Config.setRunning(false);
+        Toast.makeText(this, "MainService stopped", Toast.LENGTH_SHORT ).show();
     }
 
     @Override
-    protected void onHandleIntent(Intent workIntent) {
-        if (workIntent != null) {
-            String actionString = workIntent.getAction();
-            System.out.println("Action: " + actionString);
-            this.loopSendLocation(actionString);
-        }
-    }
-
-    private void loopSendLocation(String content) {
-        int n = 0;
-        while(! stopService) {
-            n++;
-            System.out.println(n + ": sending location, Interval is: " + Config.getInterval());
-            try {
-                sendLocation();
-                if (Config.getInterval() == 0 ) {
-                    Config.setInterval(1000);
-                }
-                Thread.sleep(Config.getInterval());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("stopped sending locations");
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     public void sendLocation() throws JSONException, IOException {
@@ -115,5 +156,4 @@ public class SendLocationService extends IntentService {
         }
         return null;
     }
-
 }

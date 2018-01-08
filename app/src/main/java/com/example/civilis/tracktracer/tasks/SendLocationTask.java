@@ -1,9 +1,9 @@
-package com.example.civilis.myapplication.tasks;
+package com.example.civilis.tracktracer.tasks;
 
 import android.os.AsyncTask;
 
-import com.example.civilis.myapplication.Util.Config;
-import com.example.civilis.myapplication.http.Connection;
+import com.example.civilis.tracktracer.Util.Config;
+import com.example.civilis.tracktracer.http.Connection;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,11 +1,11 @@
-package com.example.civilis.myapplication;
+package com.example.civilis.tracktracer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.example.civilis.myapplication.Util.Constants;
+import com.example.civilis.tracktracer.Util.Constants;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.civilis.myapplication;
+package com.example.civilis.tracktracer;
 
 import org.junit.Test;
 

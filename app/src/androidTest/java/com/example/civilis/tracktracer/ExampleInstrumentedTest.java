@@ -1,4 +1,4 @@
-package com.example.civilis.myapplication;
+package com.example.civilis.tracktracer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
